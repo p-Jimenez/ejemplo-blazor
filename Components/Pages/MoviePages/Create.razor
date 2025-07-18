@@ -52,7 +52,7 @@
     private async Task AddMovie()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Movie.Add(Movie);
+        context.Movie.Add(Movie); // <--- create de un modelo
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/movies");
     }

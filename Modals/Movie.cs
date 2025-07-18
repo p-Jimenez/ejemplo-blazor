@@ -3,8 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorWebAppMovies.Models;
 
+[Table("Movie")] // <--- nombre de la tabla
 public class Movie
 {
+    [Key] // <--- llave primaria
+    [Column("Id")] // <--- nombre de la columna, se puede omitir si en la tabla se llama igual
     public int Id { get; set; }
 
     public string? Title { get; set; }
@@ -13,7 +16,7 @@ public class Movie
 
     public string? Genre { get; set; }
 
-    [DataType(DataType.Currency)]
-    [Column(TypeName = "decimal(18, 2)")]
+    [DataType(DataType.Currency)] // <--- para que se muestre en diferentes formatos
+    [Column(TypeName = "decimal(18, 2)")] // <--- en caso de tener que definir el tipo de columna
     public decimal Price { get; set; }
 }

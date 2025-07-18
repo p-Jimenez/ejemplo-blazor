@@ -1,9 +1,11 @@
-@page "/movies"
+@page "/movies" 
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using BlazorWebAppMovies.Models
 @using BlazorWebAppMovies.Data
 @inject IDbContextFactory<BlazorWebAppMovies.Data.BlazorWebAppMoviesContext> DbFactory
+
+@*@page "/movies" <--- ruta de la página*@
 
 <PageTitle>Index</PageTitle>
 
@@ -48,7 +50,8 @@
     {
         context = DbFactory.CreateDbContext();
 
-        movies = context.Movie.ToList();
+        movies = context.Movie // <--- para hacer queries a un modelo
+            .ToList(); 
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();

@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using BlazorWebAppMovies.Data;
 
+String contextName = "BlazorWebAppMoviesContext"; // <-- cambiar esto aqui y en appsettings.json junto a la string de la base de datos
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContextFactory<BlazorWebAppMoviesContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("BlazorWebAppMoviesContext"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("BlazorWebAppMoviesContext")))
+    options.UseMySql(builder.Configuration.GetConnectionString(contextName), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString(contextName)))
 );
 // builder.Services.AddQuickGridEntityFrameworkAdapter();
 

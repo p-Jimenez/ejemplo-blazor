@@ -60,7 +60,7 @@
     private async Task DeleteMovie()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Movie.Remove(movie!);
+        context.Movie.Remove(movie!); // <--- delete de un modelo
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/movies");
     }

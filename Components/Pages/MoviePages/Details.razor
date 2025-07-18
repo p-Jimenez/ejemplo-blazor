@@ -42,7 +42,8 @@
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        movie = await context.Movie.FirstOrDefaultAsync(m => m.Id == Id);
+        movie = await context.Movie
+            .FirstOrDefaultAsync(m => m.Id == Id); // <--- consulta mediante una funcion anonima, aqui puedes hacer las comparaciones que quieras
 
         if (movie is null)
         {

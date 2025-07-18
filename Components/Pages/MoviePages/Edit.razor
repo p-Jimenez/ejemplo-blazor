@@ -24,7 +24,7 @@ else
                 <input type="hidden" name="Movie.Id" value="@Movie.Id" />
                 <div class="mb-3">
                     <label for="title" class="form-label">Title:</label>
-                    <InputText id="title" @bind-Value="Movie.Title" class="form-control" />
+                    <InputText id="title" @bind-Value="Movie.Title" class="form-control" /> @*<--- @bind-Value te permite vincular una propiedad a un imput*@
                     <ValidationMessage For="() => Movie.Title" class="text-danger" />
                 </div>
                 <div class="mb-3">
@@ -62,8 +62,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
-        Movie ??= await context.Movie.FirstOrDefaultAsync(m => m.Id == Id);
-
+        Movie ??= await context.Movie
+            .FirstOrDefaultAsync(m => m.Id == Id); 
         if (Movie is null)
         {
             NavigationManager.NavigateTo("notfound");
@@ -75,7 +75,7 @@ else
     private async Task UpdateMovie()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Attach(Movie!).State = EntityState.Modified;
+        context.Attach(Movie!).State = EntityState.Modified; // <--- si haces modificaciones, debes asociarlo al context 
 
         try
         {
