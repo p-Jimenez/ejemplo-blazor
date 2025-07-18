@@ -5,11 +5,11 @@ using BlazorWebAppMovies.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContextFactory<BlazorWebAppMoviesContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("BlazorWebAppMoviesContext") ?? throw new InvalidOperationException("Connection string 'BlazorWebAppMoviesContext' not found.")));
+    options.UseMySql(builder.Configuration.GetConnectionString("BlazorWebAppMoviesContext"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("BlazorWebAppMoviesContext")))
+);
+// builder.Services.AddQuickGridEntityFrameworkAdapter();
 
-builder.Services.AddQuickGridEntityFrameworkAdapter();
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -23,7 +23,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-    app.UseMigrationsEndPoint();
+    // app.UseMigrationsEndPoint();
 }
 
 app.UseHttpsRedirection();
