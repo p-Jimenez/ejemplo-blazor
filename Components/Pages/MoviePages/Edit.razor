@@ -24,7 +24,7 @@ else
                 <input type="hidden" name="Movie.Id" value="@Movie.Id" />
                 <div class="mb-3">
                     <label for="title" class="form-label">Title:</label>
-                    <InputText id="title" @bind-Value="Movie.Title" class="form-control" /> @*<--- @bind-Value te permite vincular una propiedad a un imput*@
+                    <InputText id="title" @bind-Value="Movie.Title" class="form-control" /> @*<--- @bind-Value te permite vincular una propiedad a un input*@
                     <ValidationMessage For="() => Movie.Title" class="text-danger" />
                 </div>
                 <div class="mb-3">
@@ -34,7 +34,14 @@ else
                 </div>
                 <div class="mb-3">
                     <label for="genre" class="form-label">Genre:</label>
-                    <InputText id="genre" @bind-Value="Movie.Genre" class="form-control" />
+                    <InputSelect id="genre" @bind-Value="Movie.GenreId" class="form-select">
+                    @* <InputText id="genre" @bind-Value="Movie.Genre" class="form-control" /> *@
+
+                        @foreach (var genre in genres){
+                            <option value="@genre.Id">@genre.Name</option>
+                        }
+                    </InputSelect>
+
                     <ValidationMessage For="() => Movie.Genre" class="text-danger" />
                 </div>
                 <div class="mb-3">
@@ -59,9 +66,14 @@ else
     [SupplyParameterFromForm]
     private Movie? Movie { get; set; }
 
+    private List<Genre> genres {get; set;} = new();
+
     protected override async Task OnInitializedAsync()
     {
         using var context = DbFactory.CreateDbContext();
+
+        genres = context.Genre.ToList();
+
         Movie ??= await context.Movie
             .FirstOrDefaultAsync(m => m.Id == Id); 
         if (Movie is null)

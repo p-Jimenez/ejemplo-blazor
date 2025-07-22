@@ -31,10 +31,11 @@
             <tr>
                 <td>@movie.Title</td>
                 <td>@movie.ReleaseDate</td>
-                <td>@movie.Genre</td>
+                <td>@movie.Genre.Name</td>
                 <td>@movie.Price</td>
                 <td>
                     <a href="@($"/movies/details?id={movie.Id}")">Details</a> | <a href="@($"/movies/edit?id={movie.Id}")">Edit</a>
+                    | <a href="@($"/movies/delete?id={movie.Id}")">Delete</a>
                 </td>
             </tr>
         }
@@ -51,6 +52,7 @@
         context = DbFactory.CreateDbContext();
 
         movies = context.Movie // <--- para hacer queries a un modelo
+            .Include(movie => movie.Genre)
             .ToList(); 
     }
 
