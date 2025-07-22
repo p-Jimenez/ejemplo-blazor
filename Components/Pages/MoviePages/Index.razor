@@ -1,4 +1,4 @@
-@page "/movies" 
+@page "/movies"
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Components.QuickGrid
 @using BlazorWebAppMovies.Models
@@ -34,7 +34,8 @@
                 <td>@movie.Genre.Name</td>
                 <td>@movie.Price</td>
                 <td>
-                    <a href="@($"/movies/details?id={movie.Id}")">Details</a> | <a href="@($"/movies/edit?id={movie.Id}")">Edit</a>
+                    <a href="@($"/movies/details?id={movie.Id}")">Details</a> | <a
+                        href="@($"/movies/edit?id={movie.Id}")">Edit</a>
                     | <a href="@($"/movies/delete?id={movie.Id}")">Delete</a>
                 </td>
             </tr>
@@ -42,8 +43,33 @@
     </tbody>
 </table>
 
+<div class="d-flex gap-3 mb-3">
+    <input class="form-control" @bind="@searchTerm"  />
+
+    <button class="btn btn-primary" @onclick="SearchMovies">
+        Search
+    </button>
+</div>
+<div class="d-flex gap-3">
+
+    <button class="btn btn-primary" @onclick="()=> SearchByGenre(null)">
+        Reset
+    </button>
+
+
+    <button class="btn btn-primary" @onclick="()=> SearchByGenre(1)">
+        Terror
+    </button>
+
+    <button class="btn btn-primary" @onclick="() => SearchByGenre(2)">
+        Romance
+    </button>
+</div>
+
 @code {
     private BlazorWebAppMoviesContext context = default!;
+
+    private String searchTerm = "";
 
     private List<Movie> movies = new();
 
@@ -51,9 +77,23 @@
     {
         context = DbFactory.CreateDbContext();
 
+        SearchMovies();
+    }
+
+    private void SearchMovies() 
+    {
         movies = context.Movie // <--- para hacer queries a un modelo
-            .Include(movie => movie.Genre)
-            .ToList(); 
+        .Include(movie => movie.Genre)
+        .Where((movie) => movie.Title.Contains(searchTerm))
+        .ToList();
+    }
+
+    private void SearchByGenre(int? genreId)
+    {
+        movies = context.Movie // <--- para hacer queries a un modelo
+        .Include(movie => movie.Genre)
+        .Where((movie) => genreId == null || movie.Genre.Id == genreId)
+        .ToList();
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();

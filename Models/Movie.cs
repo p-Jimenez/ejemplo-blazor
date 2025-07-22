@@ -10,7 +10,7 @@ public class Movie
     [Column("Id")] // <--- nombre de la columna, se puede omitir si en la tabla se llama igual que en la variable
     public int Id { get; set; }
 
-    public string? Title { get; set; }
+    public string Title { get; set; } = "";
 
     public DateOnly ReleaseDate { get; set; }
 
